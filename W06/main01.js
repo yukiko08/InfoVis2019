@@ -27,18 +27,6 @@ function main()
     var torus_knot = new THREE.Mesh( geometry, material );
     scene.add( torus_knot );
 
-    //グーローシェーディング
-    point_position = modelViewMatrix * vec4( position, 1.0 );
-    normal_vector = normalMatrix * normal;
-
-    vec3 C = color;
-    vec3 L = normalize( light_position - point_position.xyz );
-    vec3 N = normalize( normal_vector );
-
-    point_color = LambertianReflection( C, L, N );
-    gl_Position = projectionMatrix * point_position;
-    //
-
     loop();
 
     function loop()
