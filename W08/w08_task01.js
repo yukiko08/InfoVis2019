@@ -85,14 +85,13 @@ function main()
     material.vertexColors = THREE.VertexColors;
     for ( var i = 0; i < nfaces; i++ )
     {
-      var a = 255/((0.8-0.1)*10);
       var id = faces[i];
-      var S0 = scalars[ id[0] ]*a;
-      var S1 = scalars[ id[1] ]*a;
-      var S2 = scalars[ id[2] ]*a;
-      var C0 = new THREE.Color().setHex( cmap[ Math.round(S0) ][1] );
-      var C1 = new THREE.Color().setHex( cmap[ Math.round(S1) ][1] );
-      var C2 = new THREE.Color().setHex( cmap[ Math.round(S2) ][1] );
+      var S0 = Math.round((scalars[ id[0] ]-0.1)/0.7*255);
+      var S1 = Math.round((scalars[ id[1] ]-0.1)/0.7*255);
+      var S2 = Math.round((scalars[ id[2] ]-0.1)/0.7*255);
+      var C0 = new THREE.Color().setHex( cmap[ S0 ][1] );
+      var C1 = new THREE.Color().setHex( cmap[ S1 ][1] );
+      var C2 = new THREE.Color().setHex( cmap[ S2 ][1] );
       geometry.faces[i].vertexColors.push( C0 );
       geometry.faces[i].vertexColors.push( C1 );
       geometry.faces[i].vertexColors.push( C2 );
