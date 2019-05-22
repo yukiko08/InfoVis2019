@@ -95,6 +95,9 @@ function main()
       geometry.faces[i].vertexColors.push( C0 );
       geometry.faces[i].vertexColors.push( C1 );
       geometry.faces[i].vertexColors.push( C2 );
+      console.log(C0);
+      console.log(C1);
+      console.log(C2);
     }
 
     var triangle = new THREE.Mesh( geometry, material );
