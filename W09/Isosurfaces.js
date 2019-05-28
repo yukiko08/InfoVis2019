@@ -76,8 +76,8 @@ function Isosurfaces( volume, isovalue )
                     geometry.faces.push( new THREE.Face3( id0, id1, id2 ) );
 
                     var C0 = new THREE.Color().setHex( cmap[ 120 ][1] );
-                    var C1 = new THREE.Color().setHex( cmap[ 255 ][1] );
-                    var C2 = new THREE.Color().setHex( cmap[ 10 ][1] );
+                    var C1 = new THREE.Color().setHex( cmap[ 120 ][1] );
+                    var C2 = new THREE.Color().setHex( cmap[ 110 ][1] );
                     geometry.faces[geometry.faces.length-1].vertexColors.push(C0);
                     geometry.faces[geometry.faces.length-1].vertexColors.push(C1);
                     geometry.faces[geometry.faces.length-1].vertexColors.push(C2);
