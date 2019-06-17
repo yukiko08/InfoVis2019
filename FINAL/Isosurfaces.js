@@ -1,15 +1,39 @@
-function Isosurfaces( volume, isovalue )
+function Isosurfaces( volume, isovalue, screen ,shader, colorsize, colormap)
 {
     var geometry = new THREE.Geometry();
     var material = new THREE.MeshLambertMaterial();
 
+    material.vertexColors = THREE.VertexColors;
+
     var smin = volume.min_value;
     var smax = volume.max_value;
-    //isovalue = KVS.Clamp( isovalue, smin, smax );
-
+    //isovalue = KVS.Clamp( isovalue, smin, smax )
     var lut = new KVS.MarchingCubesTable();
     var cell_index = 0;
     var counter = 0;
+
+    var cmap = [];
+    for ( var i = 0; i < 256; i++ )
+    {
+        var S = i / 255.0; // [0,1]
+        var R = Math.max( Math.cos( colormap[0]*( S - colormap[1] ) * Math.PI ), 0.0 );
+        var G = Math.max( Math.cos( ( S - colormap[2] ) * Math.PI ), 0.0 );
+        var B = Math.max( Math.cos( S * Math.PI ), 0.0 );
+        var color = new THREE.Color( R, G, B );
+        cmap.push( [ S, '0x' + color.getHexString() ] );
+    }
+
+
+
+    var material = new THREE.ShaderMaterial({
+          vertexColors: THREE.VertexColors,
+          vertexShader: document.getElementById(shader+'.vert').text,
+          fragmentShader: document.getElementById(shader+'.frag').text,
+          uniforms: {
+          light_position: { type: 'v3', value: screen.light.position }
+          }
+    });
+
     for ( var z = 0; z < volume.resolution.z - 1; z++ )
     {
         for ( var y = 0; y < volume.resolution.y - 1; y++ )
@@ -53,12 +77,21 @@ function Isosurfaces( volume, isovalue )
                     var id1 = counter++;
                     var id2 = counter++;
                     geometry.faces.push( new THREE.Face3( id0, id1, id2 ) );
+
+                    var C0 = new THREE.Color().setHex( cmap[ colorsize ][1] );
+                    var C1 = new THREE.Color().setHex( cmap[ colorsize ][1] );
+                    var C2 = new THREE.Color().setHex( cmap[ colorsize ][1] );
+
+                    geometry.faces[geometry.faces.length-1].vertexColors.push(C0);
+                    geometry.faces[geometry.faces.length-1].vertexColors.push(C1);
+                    geometry.faces[geometry.faces.length-1].vertexColors.push(C2);
                 }
             }
             cell_index++;
         }
         cell_index += volume.resolution.x;
     }
+
 
     geometry.computeVertexNormals();
 
